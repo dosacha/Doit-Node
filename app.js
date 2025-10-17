@@ -10,6 +10,8 @@ app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+app.use(express.static("public"));
+
 // 루트로 접속하면 routes/main.js 의 라우트 사용
 app.use("/", require("./routes/main"));
 
