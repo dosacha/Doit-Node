@@ -1,9 +1,12 @@
 require("dotenv").config(); // env에 있는 변수 가져오기
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
+const connectDb = require("./config/db");
 
 const app = express();
 const port = process.env.PORT || 3000; // .env에 PORT가 없으면 3000번 PROT 사용
+
+connectDb();
 
 // 레이아웃과 뷰 엔진 설정
 app.use(expressLayouts);
