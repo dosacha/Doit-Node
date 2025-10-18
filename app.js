@@ -15,6 +15,9 @@ app.set("views", "./views");
 
 app.use(express.static("public"));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}));
+
 // 루트로 접속하면 routes/main.js 의 라우트 사용
 app.use("/", require("./routes/main"));
 app.use("/", require("./routes/admin"));
