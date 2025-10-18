@@ -98,7 +98,8 @@ router.get(
         const locals = {
             title: "Posts",
         };
-        const data = await Post.find(); // 전체 게시물 가져오기
+        
+        const data = await Post.find().sort({ updatedAt: "desc", createdAt: "desc"}); // 전체 게시물 가져오기
         res.render("admin/allPosts", { // locals값과 data 넘기기
             locals,
             data, // Post 모델에서 저장된 자료를 모두 가져와 저장한 변수
@@ -115,6 +116,99 @@ router.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
 });
+
+/**
+ * GET /add
+ * Admin - Add Post
+ */
+router.get(
+    "/add",
+    checkLogin,
+    asyncHandler(async (req, res) => {
+        const locals = {
+            title: "게시물 작성",
+        };
+        res.render("admin/add", {
+            locals,
+            layout: adminLayout,
+        });
+    })
+);
+
+/**
+ * POST /logout
+ * Admin - Add Post
+ */
+router.post(
+    "/add",
+    checkLogin,
+    asyncHandler(async (req, res) => {
+        const { title, body } = req.body;
+
+        const newPost = new Post({
+            title: title,
+            body: body,
+        });
+
+        await Post.create(newPost);
+
+        res.redirect("/allPosts");
+    })
+);
+
+/**
+ * GET /edit/:id
+ * Admin - Edit Post
+ */
+router.get(
+    "/edit/:id",
+    checkLogin,
+    asyncHandler(async (req, res) => {
+        const locals = {
+            title: "게시물 편집",
+        };
+
+        // id값을 사용해서 게시물 가져오기
+        const data = await Post.findOne({ _id: req.params.id});
+        res.render("admin/edit", {
+            locals,
+            data,
+            layout: adminLayout,
+        });
+    })
+);
+
+/**
+ * PUT /edit/:id
+ * Admin - Edit Post
+ */
+router.put(
+    "/edit/:id",
+    checkLogin,
+    asyncHandler(async (req, res) => {
+        await Post.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            body: req.body.body,
+            createdAt: Date.now(),
+        });
+
+        // 수정한 후 전체 목록 다시 표시하기
+        res.redirect("/allPosts");
+    })
+);
+
+/**
+ * DELETE /edit/:id
+ * Admin - Delete Post
+ */
+router.delete(
+    "/delete/:id",
+    checkLogin,
+    asyncHandler(async (req, res) => {
+        await Post.deleteOne({ _id: req.params.id});
+        res.redirect("/allPosts");
+    })
+);
 
 // /**
 //  * POST /register

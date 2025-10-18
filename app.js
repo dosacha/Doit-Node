@@ -3,6 +3,7 @@ const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const connectDb = require("./config/db");
 const cookieParser = require("cookie-parser");
+const methodOverride = require("method-override");
 
 const app = express();
 const port = process.env.PORT || 3000; // .env에 PORT가 없으면 3000번 PROT 사용
@@ -18,6 +19,8 @@ app.use(express.static("public"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
+
+app.use(methodOverride("_method"));
 
 app.use(cookieParser());
 

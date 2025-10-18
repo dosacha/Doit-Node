@@ -1,0 +1,18 @@
+<a href="/allPosts">&larr; 뒤로</a>
+<div class="admin-title">
+  <h2><%= locals.title %></h2>
+  <form action="/delete/<%= data._id %>?method=DELETE" method="POST">
+    <input type="submit" value="삭제" class="btn-delete btn">
+  </form>
+</div>
+
+<!-- 데이터베이스의 데이터를 수정하려면 PUT 으로 요청해야 하는데 웹애서 폼은 POST 방식을 사용함. 그래서 method_override 모듈을 사용하여 ?_method=PUT를 사용.-->
+<form action="/edit/<%= data._id %>?_method=PUT" method="POST">
+  <label for="title"><b>제목</b></label>
+  <input type="text" name="title" id="title" value="<%= data.title %>">
+
+  <label for="body"><b>Content</b></label>
+  <textarea name="body" id="body" cols="50" rows="10"><%= data.body %></textarea>
+
+  <input type="submit" value="수정" class="btn">
+</form>
