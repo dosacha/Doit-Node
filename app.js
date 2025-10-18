@@ -17,7 +17,7 @@ app.use(express.static("public"));
 
 // 루트로 접속하면 routes/main.js 의 라우트 사용
 app.use("/", require("./routes/main"));
-
+app.use("/", require("./routes/admin"));
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
